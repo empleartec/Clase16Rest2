@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String MY_KEY = "bb2f7ea4d1451f7170f7a7e1bc372efb";
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,25 +37,27 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         WeatherService service = retrofit.create(WeatherService.class);
 
-        Call<ResponseBody> cityForecastCall = service.cityForecast("Buenos Aires", MY_KEY);
+        Call<Forecast5> cityForecastCall = service.cityForecast("Buenos Aires", MY_KEY, "metric");
 
-        cityForecastCall.enqueue(new Callback<ResponseBody>() {
+        cityForecastCall.enqueue(new Callback<Forecast5>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Forecast5> call, Response<Forecast5> response) {
                 try {
                     mText.setText(
-                            response.body()!=null?
-                                    response.body().string():
+                            response.body() != null ?
+                                    response.body().toString() :
                                     response.errorBody().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Forecast5> call, Throwable t) {
             }
         });
 
@@ -64,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     public interface WeatherService {
         @GET("/data/2.5/forecast/city")
-        Call<ResponseBody> cityForecast (@Query("q") String query,
-                                         @Query("APPID") String appId);
+        Call<Forecast5> cityForecast (@Query("q") String query,
+                                      @Query("APPID") String appId,
+                                      @Query("units") String units );
     }
 
 }
