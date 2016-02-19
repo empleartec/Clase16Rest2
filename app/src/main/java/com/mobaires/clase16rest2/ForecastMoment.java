@@ -1,5 +1,8 @@
 package com.mobaires.clase16rest2;
 
+/**
+ * Created by lpp on 19/02/2016.
+ */
 public class ForecastMoment {
 
     public ForecastMoment() {}
@@ -35,5 +38,5 @@ public class ForecastMoment {
     public String toString() {
         return main==null?"\tNo info": ("\tT: " + main.getTemp() + "º" + "    H: " + main.getHumidity() + "%");
     }
-}
 
+}

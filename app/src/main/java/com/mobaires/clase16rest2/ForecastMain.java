@@ -1,6 +1,10 @@
 package com.mobaires.clase16rest2;
 
+/**
+ * Created by lpp on 19/02/2016.
+ */
 public class ForecastMain {
+
     public ForecastMain() {}
     private float temp;
     private float humidity;
@@ -20,4 +24,5 @@ public class ForecastMain {
     public void setHumidity(float humidity) {
         this.humidity = humidity;
     }
+
 }
